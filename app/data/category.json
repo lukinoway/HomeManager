@@ -1,0 +1,39 @@
+{
+  "category": [
+    {
+      "parent": 0,
+      "typeText": "Zeitschrift",
+      "typeId": 6
+    },
+    {
+      "parent": 0,
+      "typeText": "Essen",
+      "typeId": 8
+    },
+    {
+      "parent": 0,
+      "typeText": "Event",
+      "typeId": 5
+    },
+    {
+      "parent": 0,
+      "typeText": "Auto",
+      "typeId": 9
+    },
+    {
+      "parent": 0,
+      "typeText": "updated Text",
+      "typeId": 12
+    },
+    {
+      "parent": 0,
+      "typeText": "updated Text",
+      "typeId": 13
+    },
+    {
+      "parent": 0,
+      "typeText": "updated Text",
+      "typeId": 14
+    }
+  ]
+}

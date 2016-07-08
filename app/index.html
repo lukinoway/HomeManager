@@ -84,21 +84,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- Added main menu entries -->
           <!-- Transaktions Entry-->
-          <a data-route="transaktion" href="{{baseUrl}}users">
+          <a data-route="transaktion" href="{{baseUrl}}transaktion">
             <iron-icon icon="account-balance-wallet"></iron-icon>
-            <span>Transaktionen</span>
+            <span>Transaktion</span>
           </a>
           <!-- Category Entry-->
-          <a data-route="category" href="{{baseUrl}}users">
+          <a data-route="category" href="{{baseUrl}}category">
             <iron-icon icon="list"></iron-icon>
             <span>Kategorie</span>
           </a>
           <!-- Konto Entry -->
-          <a data-route="konto" href="{{baseUrl}}users">
+          <a data-route="konto" href="{{baseUrl}}konto">
             <iron-icon icon="credit-card"></iron-icon>
-            <span>kategori</span>
+            <span>Konto</span>
           </a>
 
+          <!-- not used code
           <a data-route="users" href="{{baseUrl}}users">
             <iron-icon icon="info"></iron-icon>
             <span>Users</span>
@@ -108,6 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="mail"></iron-icon>
             <span>Contact</span>
           </a>
+        -->
         </paper-menu>
       </paper-scroll-header-panel>
 
@@ -125,12 +127,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- Application name -->
           <div class="middle middle-container">
-            <div class="app-name">Polymer Starter Kit</div>
+            <div class="app-name">HomeManager</div>
           </div>
 
           <!-- Application sub title -->
           <div class="bottom bottom-container">
-            <div class="bottom-title">The future of the web today</div>
+            <div class="bottom-title">Fit your basic needs</div>
           </div>
         </paper-toolbar>
 
@@ -141,14 +143,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <my-greeting></my-greeting>
 
-                <p class="subhead">You now have:</p>
-                <my-list></my-list>
-
-                <p>Looking for more Web App layouts? Check out our <a href="https://github.com/PolymerElements/app-layout-templates">layouts</a> collection. You can also <a href="http://polymerelements.github.io/app-layout-templates/">preview</a> them live.</p>
               </paper-material>
 
               <paper-material elevation="1">
                 <p>This is another card.</p>
+              </paper-material>
+            </section>
+
+            <!-- Add sections for Menu entries: -->
+            <section data-route="transaktion" tabindex="-1">
+              <paper-material elevation="1">
+                <h1 class="page-title" tabindex="-1">Transaktionen</h1>
+              </paper-material>
+            </section>
+
+            <section data-route="category" tabindex="-1">
+              <paper-material elevation="1">
+                <h1 class="page-title" tabindex="-1">Kategorien</h1>
+              </paper-material>
+            </section>
+
+            <section data-route="konto" tabindex="-1">
+              <paper-material elevation="1">
+                <h1 class="page-title" tabindex="-1">Kontos</h1>
               </paper-material>
             </section>
 

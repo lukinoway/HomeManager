@@ -1,0 +1,75 @@
+<!-- Element to add a Transaktion add the front page -->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-date-picker/paper-date-picker.html">
+
+<dom-module id="quick-transaktion">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+      paper-fab.add {
+        --paper-fab-background: var(--paper-light-green-500);
+        --paper-fab-keyboard-focus-background: var(--paper-light-green-900);
+        display: block;
+        margin-top: 20pt;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      paper-dropdown-menu {
+        width: 100%;
+      }
+
+    </style>
+
+
+    <h1 class="page-title" tabindex="-1">Quick Transaktion</h1>
+    <paper-input id="transaktionText" label="Text"></paper-input>
+
+
+    <paper-input id="transaktionBetrag" label="Betrag" type="decimal">
+      <div suffix>€</div>
+    </paper-input>
+
+
+    <!--<paper-date-picker label='Datum'></paper-date-picker>-->
+
+
+    <paper-dropdown-menu id="transaktionCategory" label="Kategorie" vertical-align="top" horizontal-align="left">
+      <paper-listbox class="dropdown-content">
+        <paper-item>Auto-Tanken</paper-item>
+        <paper-item>Auto-Reparatur</paper-item>
+        <paper-item>Auto-Versicherung</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <br/>
+
+    <paper-dropdown-menu id="transaktionKonto" label="Konto" vertical-align="top" horizontal-align="left">
+      <paper-listbox class="dropdown-content">
+        <paper-item>PSK-Konto</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-fab id="transaktionAdd" icon="add" title="add Transaktion" class="add" elevation="2"></paper-fab>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'quick-transaktion',
+
+        properties: {
+        }
+      });
+    })();
+  </script>
+</dom-module>

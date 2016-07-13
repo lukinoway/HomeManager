@@ -1,0 +1,96 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+
+<dom-module id="konto-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+
+      .konto {
+        background-color: white;
+        border-style: solid;
+        border-color: #dedede;
+        border-width: 1px;
+      }
+      .konto .kontoheader {
+        padding: 15px;
+        padding-bottom: 30px;
+        background-color: #78909c;
+        color: white;
+      }
+      .konto .text {
+        padding-top: 15px;
+        padding-left: 40px;
+        padding-right: 40px;
+        font-size: 21px;
+        font-weight: 300;
+      }
+    </style>
+    <iron-ajax
+      id="kontoRequest"
+      auto
+      url="http://localhost:8081/ExpenseWebservice/konto/user/test/pass/test"
+      handle-as="json"
+      method="GET"
+      on-response="handleResponse"
+      last-response={{data}}>
+    </iron-ajax>
+    <iron-list items="[[data.konto]]" as="item">
+      <template>
+          <div class="konto">
+            <div class="kontoheader" onclick="_toggle(event)">
+              <span style="float: left" >[[item.kontoName]]</span>
+              <span style="float: right">[[item.kontoNr]]</span>
+            </div>
+            <iron-collapse class="collapse" no-animation>
+            <div class="text">
+              <span style="float: left">visible: [[item.visible]]</span>
+              <span style="float: right">ID: [[item.kontoId]]</span>
+            </div>
+            </iron-collapse>
+          </div>
+      </template>
+    </iron-list>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'konto-list',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'konto-list',
+          notify: true
+        }
+      },
+      handleResponse: function() {
+        var data = this.$.kontoRequest.lastResponse;
+        console.log("received data:" + JSON.stringify(data));
+      },
+    });
+  })();
+  // handle click on transaktion header to open details
+  function _toggle(event) {
+    var head = Polymer.dom(event).localTarget.parentElement;
+    console.log("clicked header" +  JSON.stringify(event.detail));
+    head.querySelector('.collapse').toggle();
+
+  };
+
+  </script>
+</dom-module>

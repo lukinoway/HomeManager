@@ -1,0 +1,105 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/iron-form/iron-form.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+
+<dom-module id="add-konto">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <form is="iron-form" method="get" action="/" id="basic">
+      <paper-input id="kontoNr" label="Konto NR" required></paper-input>
+      <paper-input id="kontoName" label="Konto Name" required></paper-input>
+      <br>
+      <paper-checkbox id="visible">public</paper-checkbox>
+      <br>
+      <paper-input id="bankURL" label="E-Banking URL"></paper-input>
+      <paper-input id="BIC" label="BIC"></paper-input>
+      <paper-input id="IBAN" label="IBAN"></paper-input>
+      <br>
+      <paper-button raised onclick="_submit(event)">Submit</paper-button>
+      <paper-button raised onclick="_reset(event)">Reset</paper-button>
+      <div class="output"></div>
+    </form>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'add-konto',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'add-konto',
+          notify: true
+        }
+      }
+    });
+  })();
+
+
+    function _submit(event) {
+      var form = Polymer.dom(event).localTarget.parentElement
+
+      console.log("start add category");
+
+      var visible = "false";
+      // special handling for boolean
+      if(form.querySelector('#visible').value.toString() == "on") {
+        visible = "true";
+      }
+
+      // build json
+      var kontoJson = {};
+      kontoJson["kontoNr"] = form.querySelector('#kontoNr').value;
+      kontoJson["kontoName"] = form.querySelector('#kontoName').value;
+      kontoJson["visible"] = visible;
+      kontoJson["kontoName"] = form.querySelector('#kontoName').value;
+      kontoJson["kontoTransferInfo"] = "";
+      kontoJson["kontoId"] = "0";
+      kontoJson["bankURL"] = form.querySelector('#bankURL').value;
+      kontoJson["userId"] = "1";
+      console.log("current json: " + JSON.stringify(kontoJson));
+
+      var http = new XMLHttpRequest();
+      var url = "http://localhost:8081/ExpenseWebservice/kontohandler/addkonto";
+
+      http.open('POST', url, true);
+      http.setRequestHeader('Content-type', 'application/json');
+      http.setRequestHeader('Accept', 'application/json');
+      //http.setRequestHeader('Origin', 'http://localhost');
+      // http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+      http.onload = function () {
+        console.log("reply: " + this.responseText);
+        alert(this.responseText);
+      };
+      http.send(JSON.stringify(kontoJson));
+
+
+    }
+    function _reset(event) {
+      var form = Polymer.dom(event).localTarget.parentElement
+      form.reset();
+    }
+
+  </script>
+</dom-module>

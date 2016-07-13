@@ -1,0 +1,76 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="..\..\bower_components/iron-list/iron-list.html">
+
+<dom-module id="category-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .category {
+        background-color: white;
+        border-style: solid;
+        border-color: #dedede;
+        border-width: 1px;
+      }
+      .category .categoryheader {
+        padding: 15px;
+        padding-bottom: 30px;
+        background-color: #78909c;
+        color: white;
+      }
+    </style>
+    <iron-ajax
+      id="categoryRequest"
+      auto
+      url="http://localhost:8081/ExpenseWebservice/categorylist"
+      handle-as="json"
+      method="GET"
+      on-response="handleResponse"
+      last-response="{{data}}">
+    </iron-ajax>
+    <iron-list items="[[data.category]]" as="item">
+      <template>
+        <div class="category">
+          <div class="categoryheader">
+            <span style="float: left" >[[item.typeText]]</span>
+            <span style="float: right">[[item.typeId]]</span>
+          </div>
+        </div>
+      </template>
+    </iron-list>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'category-list',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'category-list',
+          notify: true
+        }
+      },
+      handleResponse: function() {
+        var data = this.$.categoryRequest.lastResponse;
+        console.log("received data:" + JSON.stringify(data));
+      }
+    });
+  })();
+  </script>
+</dom-module>

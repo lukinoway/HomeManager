@@ -1,0 +1,8 @@
+input <{"transaktionsHash":"7e7fdd7d25109563e65b34f8e0bd0cde","transaktionsText":"webservice","transaktionsBetrag":20,"kontoId":5,"typeId":1,"transaktionsId":0,"transaktionsDate":1468311508208}>
+input <{"transaktionsHash":"7e7fdd7d25109563e65b34f8e0bd0cde","transaktionsText":"webservice","transaktionsBetrag":40,"kontoId":5,"typeId":1,"transaktionsId":89,"transaktionsDate":1468311508208}>
+input <{"transaktionsHash":"7e7fdd7d25109563e65b34f8e0bd0cde","transaktionsText":"webservice","transaktionsBetrag":40,"kontoId":5,"typeId":1,"transaktionsId":89,"transaktionsDate":1468311508208}>
+input <{"kontoNr":"1234567890","visible":true,"kontoTransferInfo":"","kontoId":0,"bankURL":"","kontoName":"webserviceKonto","userId":1}>
+input <{"kontoNr":"1234567890","visible":true,"kontoTransferInfo":"","kontoId":0,"bankURL":"","kontoName":"updated Name","userId":1}>
+input <{"kontoNr":"1234567890","visible":true,"kontoTransferInfo":"","kontoId":0,"bankURL":"","kontoName":"updated Name","userId":1}>
+input <{"parent":0,"typeText":"rest category","typeId":0}>
+input <{"parent":0,"typeText":"updated Text","typeId":16}>

@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="Polymer Starter Kit">
+  <meta name="generator" content="Home Manager">
   <title>Home Manager</title>
 
   <!-- Place favicon.ico in the `app/` directory -->
@@ -37,7 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- Add to homescreen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+  <meta name="apple-mobile-web-app-title" content="Home Manager">
   <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
 
   <!-- Tile icon for Win8 (144x144) -->
@@ -141,24 +141,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
             <section data-route="home" tabindex="-1">
               <paper-material elevation="1">
+                <h1 class="page-title" tabindex="-1">Quick Transaktion</h1>
                 <quick-transaktion></quick-transaktion>
               </paper-material>
             </section>
 
             <!-- Add sections for Menu entries: -->
             <section data-route="transaktion" tabindex="-1">
+              <add-transaktion></add-transaktion>
               <paper-material elevation="1">
                 <h1 class="page-title" tabindex="-1">Transaktionen</h1>
+                <transaktion-list></transaktion-list>
               </paper-material>
             </section>
 
+            <!-- kategorie view -->
             <section data-route="category" tabindex="-1">
+              <add-category></add-category>
+
               <paper-material elevation="1">
                 <h1 class="page-title" tabindex="-1">Kategorien</h1>
+                <category-list></category-list>
               </paper-material>
             </section>
 
+            <!-- konto view  -->
             <section data-route="konto" tabindex="-1">
+              <add-konto></add-konto>
               <paper-material elevation="1">
                 <h1 class="page-title" tabindex="-1">Kontos</h1>
               </paper-material>

@@ -9,10 +9,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="..\..\bower_components/polymer/polymer.html">
-<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
 <link rel="import" href="..\..\bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="..\..\bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="..\..\bower_components/paper-material/paper-material.html">
+<link rel="import" href="..\..\bower_components/iron-form/iron-form.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
 
 <dom-module id="add-konto">
   <template>
@@ -53,7 +56,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span class="expander"><iron-icon id="expander" icon="expand-more"></iron-icon>
       </h1>
       <iron-collapse id=addKontoContainer>
-        <div class="collapse-content">
+        <form is="iron-form" method="get" action="/" id="addkontoform">
+          <paper-input id="kontoNr" label="Konto NR" required></paper-input>
+          <paper-input id="kontoName" label="Konto Name" required></paper-input>
+          <br>
+          <paper-checkbox id="visible">public</paper-checkbox>
+          <br>
+          <paper-input id="bankURL" label="E-Banking URL"></paper-input>
+          <paper-input id="BIC" label="BIC"></paper-input>
+          <paper-input id="IBAN" label="IBAN"></paper-input>
+          <br>
+          <paper-button icon="add" raised onclick="_submitkonto(event)">Submit</paper-button>
+          <paper-button raised onclick="_resetkonto(event)">Reset</paper-button>
+          <div class="output"></div>
+        </form>
+        <!-- <div class="collapse-content">
         <paper-input id="kontoNr" label="Konto NR"></paper-input>
         <paper-input id="kontoDesc" label="Beschreibung"></paper-input>
         <paper-input id="kontoUrl" label="Online Banking URL"></paper-input>
@@ -62,7 +79,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-input id="kontoIban" label="IBAN"></paper-input>
         <paper-fab id="kontoAdd" icon="add" title="add Konto" class="add" elevation="2" on-tap="addKonto">
         </paper-fab>
-        </div>
+        </div> -->
       </iron-collapse>
     </paper-material>
   </template>
@@ -74,14 +91,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'add-konto',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'add-konto',
-          notify: true
-        }
-      },
-      addKonto: function() {
-        console.log("add Konto: " + kontoNr.value + ", " + kontoDesc.value);
       },
       toggle: function() {
         this.$.addKontoContainer.toggle();
@@ -96,5 +105,58 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     });
   })();
+
+    function _submitkonto(event) {
+      var form = Polymer.dom(event).localTarget.parentElement
+
+      console.log("start add category");
+
+      var visible = "false";
+      // special handling for boolean
+      if(form.querySelector('#visible').value.toString() == "on") {
+        visible = "true";
+      }
+
+      // build json
+      var kontoJson = {};
+      kontoJson["kontoNr"] = form.querySelector('#kontoNr').value;
+      kontoJson["kontoName"] = form.querySelector('#kontoName').value;
+      kontoJson["visible"] = visible;
+      kontoJson["kontoName"] = form.querySelector('#kontoName').value;
+      kontoJson["kontoTransferInfo"] = "";
+      kontoJson["kontoId"] = "0";
+      kontoJson["bankURL"] = form.querySelector('#bankURL').value;
+      kontoJson["userId"] = "1";
+      console.log("current json: " + JSON.stringify(kontoJson));
+
+      var http = new XMLHttpRequest();
+      var url = "http://localhost:8081/ExpenseWebservice/kontohandler/addkonto";
+
+      http.open('POST', url, true);
+      http.setRequestHeader('Content-type', 'application/json');
+      http.setRequestHeader('Accept', 'application/json');
+      //http.setRequestHeader('Origin', 'http://localhost');
+      // http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+      http.onload = function () {
+        console.log("status:" + this.status);
+        console.log("reply: " + this.responseText);
+
+        var message = "error while creating new konto; STATUS:" + this.status;
+        if(this.status == 200) {
+          message = this.responseText;
+          form.reset();
+        }
+        app.$.toast.text = message;
+        app.$.toast.show();
+      };
+      http.send(JSON.stringify(kontoJson));
+
+
+    }
+    function _resetkonto(event) {
+      var form = Polymer.dom(event).localTarget.parentElement
+      form.reset();
+    }
   </script>
 </dom-module>

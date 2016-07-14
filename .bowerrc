@@ -1,5 +1,5 @@
 {
   "directory": "app/bower_components",
   "proxy": "http://proxy-vip.salomon.at:8080",
-  "https_proxy": "http://proxy-vip.salomon.at:8080"
+	"https_proxy": "http://proxy-vip.salomon.at:8080"
 }

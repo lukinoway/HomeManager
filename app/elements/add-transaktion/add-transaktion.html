@@ -11,6 +11,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="..\..\bower_components/polymer/polymer.html">
 <link rel="import" href="..\..\bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="..\..\bower_components/paper-material/paper-material.html">
+<link rel="import" href="..\..\bower_components/iron-form/iron-form.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="..\..\bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="..\..\bower_components/paper-toast/paper-toast.html">
 
 <dom-module id="add-transaktion">
   <template>
@@ -43,11 +50,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span class="expander"><iron-icon id="expander" icon="expand-more"></iron-icon>
       </h1>
       <iron-collapse id="addTransaktionContainer">
-        <div class="collapse-content">
+        
+        <!-- Need to add more fields for this kind of add form  -->
+        <form is="iron-form" method="get" action="/" id="addtransaktionform">
+          <paper-input id="transaktionsText" label="Beschreibung" required></paper-input>
+          <paper-input id="transaktionsBetrag" label="Betrag" required></paper-input>
+
+          <!-- add category dropdown - need to be fixed -->
+          <!-- <iron-ajax
+            id="categoryRequest"
+            auto
+            url="http://localhost:8081/ExpenseWebservice/categorylist"
+            handle-as="json"
+            method="GET"
+            on-response="handleResponse">
+          </iron-ajax> -->
+
+          <br>
+          <paper-button raised onclick="_submittransaktion(event)">Submit</paper-button>
+          <paper-button raised onclick="_resettransaktion(event)">Reset</paper-button>
+        </form>
+        <!-- <div class="collapse-content">
           <quick-transaktion></quick-transaktion>
-        </div>
+        </div> -->
       </iron-collapse>
-    </papaer-material>
+    </paper-material>
   </template>
   <script>
   (function() {
@@ -68,8 +95,68 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           console.log('closed expander');
           this.$.expander.icon="expand-more";
         }
+      },
+
+      handleResponse: function() {
+        var data = this.$.categoryRequest.lastResponse;
+        console.log("received data:" + JSON.stringify(data));
       }
     });
   })();
+
+  function _submittransaktion(event) {
+    var form = Polymer.dom(event).localTarget.parentElement
+
+    console.log("start add transaktion");
+
+    // check if transaktionsBetrag is a number:
+    var betrag = form.querySelector('#transaktionsBetrag').value;
+    var regex=/^[0-9]+$/;
+    if (!betrag.match(regex)) {
+      alert("your current input is not a valid number; INPUT: " + betrag);
+      form.querySelector('#transaktionsBetrag').value ='';
+      form.querySelector('#transaktionsBetrag').focus();
+      return false;
+    };
+
+    // build json
+    var transaktionJson = {};
+    transaktionJson["transaktionsText"] = form.querySelector('#transaktionsText').value;
+    transaktionJson["transaktionsBetrag"] = "-" + betrag;
+    transaktionJson["transaktionsDate"] = new Date().getTime();
+    transaktionJson["kontoId"] = "5";
+    transaktionJson["typeId"] = "1";
+
+    console.log("current json: " + JSON.stringify(transaktionJson));
+
+    var http = new XMLHttpRequest();
+    var url = "http://localhost:8081/ExpenseWebservice/transaktionhandler/addtransaktion";
+
+    http.open('POST', url, true);
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('Accept', 'application/json');
+    //http.setRequestHeader('Origin', 'http://localhost');
+    // http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    http.onload = function () {
+      console.log("status:" + this.status);
+      console.log("reply: " + this.responseText);
+      // alert(this.responseText);
+
+      var message = "error while creating new transaktion; STATUS:" + this.status;
+      if(this.status == 200) {
+        message = this.responseText;
+        form.reset();
+      }
+      app.$.toast.text = message;
+      app.$.toast.show();
+    };
+    http.send(JSON.stringify(transaktionJson));
+  }
+
+  function _resettransaktion(event) {
+    var form = Polymer.dom(event).localTarget.parentElement
+    form.reset();
+  }
   </script>
 </dom-module>

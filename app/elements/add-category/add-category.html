@@ -13,6 +13,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="..\..\bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="..\..\bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="..\..\bower_components/paper-material/paper-material.html">
+<link rel="import" href="..\..\bower_components/iron-form/iron-form.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
 
 <dom-module id="add-category">
   <template>
@@ -53,11 +55,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span class="expander"><iron-icon id="expander" icon="expand-more"></iron-icon>
       </h1>
       <iron-collapse id="addCategoryContainer">
-        <div class="collapse-content">
-          <paper-input id="categoryTxt" label="Kategorie Name"></paper-input>
-          <paper-fab id="categoryAdd" icon="add" title="add Category" class="add" elevation="2" on-tap="addCategory">
-          </paper-fab>
-        </div>
+        <form is="iron-form" method="get" action="/" id="addcategoryform">
+          <paper-input id="typeText" name="typeText" label="Kategorie" required></paper-input>
+          <br>
+          <paper-button icon="add" raised onclick="_submitcategory(event)">Submit</paper-button>
+          <paper-button raised onclick="_resetcategory(event)">Reset</paper-button>
+        </form>
       </iron-collapse>
     </paper-material>
   </template>
@@ -69,11 +72,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'add-category',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'add-category',
-          notify: true
-        }
       },
       addCategory: function() {
         console.log("add new category: " + categoryTxt.value);
@@ -91,5 +89,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     });
   })();
+    // Function to handle add category
+    function _submitcategory(event) {
+      var form = Polymer.dom(event).localTarget.parentElement
+
+      console.log("start add category");
+      // build json
+      var categoryJson = {};
+      categoryJson["parent"] = "0";
+      categoryJson["typeText"] = form.querySelector('#typeText').value;
+      categoryJson["typeId"] = "0";
+
+      console.log("current json: " + JSON.stringify(categoryJson));
+
+      var http = new XMLHttpRequest();
+      var url = "http://localhost:8081/ExpenseWebservice/categoryhandler/addcategory";
+
+      http.open('POST', url, true);
+      http.setRequestHeader('Content-type', 'application/json');
+      http.setRequestHeader('Accept', 'application/json');
+      //http.setRequestHeader('Origin', 'http://localhost');
+      // http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+      http.onload = function () {
+        console.log("status:" + this.status);
+        console.log("reply: " + this.responseText);
+
+        var message = "error while creating new category; STATUS:" + this.status;
+        if(this.status == 200) {
+          message = this.responseText;
+          form.reset();
+        }
+        app.$.toast.text = message;
+        app.$.toast.show();
+      };
+      http.send(JSON.stringify(categoryJson));
+    }
+
+    // reset input form
+    function _resetcategory(event) {
+      var form = Polymer.dom(event).localTarget.parentElement
+      form.reset();
+    }
   </script>
 </dom-module>

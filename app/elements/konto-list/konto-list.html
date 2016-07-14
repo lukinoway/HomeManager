@@ -9,30 +9,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="..\..\bower_components/polymer/polymer.html">
-<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="..\..\bower_components/iron-list/iron-list.html">
-<link rel="import" href="..\..\bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="..\..\bower_components/iron-collapse/iron-collapse.html">
 
-<dom-module id="transaktion-list">
+<dom-module id="konto-list">
   <template>
     <style>
       :host {
         display: block;
       }
-      .transaktion {
+
+
+      .konto {
         background-color: white;
         border-style: solid;
         border-color: #dedede;
         border-width: 1px;
       }
-      .transaktion .transaktionheader {
+      .konto .kontoheader {
         padding: 15px;
         padding-bottom: 30px;
         background-color: #78909c;
         color: white;
       }
-      .transaktion .text {
+      .konto .text {
         padding-top: 15px;
         padding-left: 40px;
         padding-right: 40px;
@@ -41,25 +39,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <iron-ajax
-      id="transaktionRequest"
+      id="kontoRequest"
       auto
-      url="http://localhost:8081/ExpenseWebservice/transaktionlist/last10/user/test/pass/test"
+      url="http://localhost:8081/ExpenseWebservice/konto/user/test/pass/test"
       handle-as="json"
       method="GET"
       on-response="handleResponse"
       last-response={{data}}>
     </iron-ajax>
-    <iron-list items="[[data.transaktion]]" as="item">
+    <iron-list items="[[data.konto]]" as="item">
       <template>
-          <div class="transaktion">
-            <div class="transaktionheader" onclick="_toggle(event)">
-              <span style="float: left">[[item.transaktionsDateString]]</span>
-              <span style="float: right">[[item.transaktionsBetrag]]</span>
+          <div class="konto">
+            <div class="kontoheader" onclick="_toggle(event)">
+              <span style="float: left" >[[item.kontoName]]</span>
+              <span style="float: right">[[item.kontoNr]]</span>
             </div>
             <iron-collapse class="collapse" no-animation>
             <div class="text">
-              <span style="float: left">[[item.transaktionsText]]</span>
-              <span style="float: right">UID: [[item.transaktionsHash]]</span>
+              <span style="float: left">visible: [[item.visible]]</span>
+              <span style="float: right">ID: [[item.kontoId]]</span>
             </div>
             </iron-collapse>
           </div>
@@ -71,26 +69,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     'use strict';
 
     Polymer({
-      is: 'transaktion-list',
+      is: 'konto-list',
 
       properties: {
         foo: {
+          type: String,
+          value: 'konto-list',
+          notify: true
         }
       },
       handleResponse: function() {
-        var data = this.$.transaktionRequest.lastResponse;
+        var data = this.$.kontoRequest.lastResponse;
         console.log("received data:" + JSON.stringify(data));
       },
     });
   })();
-
   // handle click on transaktion header to open details
   function _toggle(event) {
     var head = Polymer.dom(event).localTarget.parentElement;
     console.log("clicked header" +  JSON.stringify(event.detail));
-    console.log(head);
     head.querySelector('.collapse').toggle();
 
   };
+
   </script>
 </dom-module>

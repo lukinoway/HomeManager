@@ -19,18 +19,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      .category {
+        background-color: white;
+        border-style: solid;
+        border-color: #dedede;
+        border-width: 1px;
+      }
+      .category .categoryheader {
+        padding: 15px;
+        padding-bottom: 30px;
+        background-color: #78909c;
+        color: white;
+      }
     </style>
     <iron-ajax
-      url="..\..\data\category.json"
-      last-response="{{data}}"
-      auto>
+      id="categoryRequest"
+      auto
+      url="http://localhost:8081/ExpenseWebservice/categorylist"
+      handle-as="json"
+      method="GET"
+      on-response="handleResponse"
+      last-response="{{data}}">
     </iron-ajax>
-    <iron-list items="[[data.category]]" as="item" maxPhysicalCount="50">
+    <iron-list items="[[data.category]]" as="item">
       <template>
-        <div tabindex$="[[tabIndex]]">
-          <span><iron-icon icon="receipt"/></span>
-          <span>ID: [[item.typeId]]</span>
-          <span>Text: [[item.typeText]]</span>
+        <div class="category">
+          <div class="categoryheader">
+            <span style="float: left" >[[item.typeText]]</span>
+            <span style="float: right">[[item.typeId]]</span>
+          </div>
         </div>
       </template>
     </iron-list>
@@ -64,8 +81,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var header = '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "Basic ' + btoa(username + ":" + password) + '"}';
         console.log(header);
         return
+      },
+      handleResponse: function() {
+        var data = this.$.categoryRequest.lastResponse;
+        if(typeof(Storage) !== "undefined") {
+          if (sessionStorage.categoryList) {
+            console.log('already stored categoryList')
+          }
+          else {
+            sessionStorage.categoryList = data;
+            console.log('stored new categoryList');
+            console.log("received data:" + JSON.stringify(data));
+          }
+        }
+        else {
+          console.log('browser doesnt support this kind of storage');
+        }
       }
-
     });
   })();
   </script>

@@ -64,11 +64,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           value: 'category-list',
           notify: true
-        }
+        },
+        data: []
       },
       handleResponse: function() {
         var data = this.$.categoryRequest.lastResponse;
-        console.log("received data:" + JSON.stringify(data));
+        if(typeof(Storage) !== "undefined") {
+          if (sessionStorage.categoryList) {
+            console.log('already stored categoryList')
+          }
+          else {
+            sessionStorage.categoryList = data;
+            console.log('stored new categoryList');
+            console.log("received data:" + JSON.stringify(data));
+          }
+        }
+        else {
+          console.log('browser doesnt support this kind of storage');
+        }
       }
     });
   })();

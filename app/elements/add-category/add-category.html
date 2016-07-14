@@ -55,12 +55,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span class="expander"><iron-icon id="expander" icon="expand-more"></iron-icon>
       </h1>
       <iron-collapse id="addCategoryContainer">
-        <form is="iron-form" method="get" action="/" id="addcategoryform">
-          <paper-input id="typeText" name="typeText" label="Kategorie" required></paper-input>
-          <br>
-          <paper-button icon="add" raised onclick="_submitcategory(event)">Submit</paper-button>
-          <paper-button raised onclick="_resetcategory(event)">Reset</paper-button>
-        </form>
+        <div class="collapse-content">
+          <form is="iron-form" method="get" action="/" id="addcategoryform">
+            <paper-input id="typeText" name="typeText" label="Kategorie" required></paper-input>
+            <br>
+            <paper-button icon="add" raised onclick="_submitcategory(event)">Submit</paper-button>
+            <paper-button raised onclick="_resetcategory(event)">Reset</paper-button>
+          </form>
+        </div>
       </iron-collapse>
     </paper-material>
   </template>

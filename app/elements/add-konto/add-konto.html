@@ -56,20 +56,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span class="expander"><iron-icon id="expander" icon="expand-more"></iron-icon>
       </h1>
       <iron-collapse id=addKontoContainer>
-        <form is="iron-form" method="get" action="/" id="addkontoform">
-          <paper-input id="kontoNr" label="Konto NR" required></paper-input>
-          <paper-input id="kontoName" label="Konto Name" required></paper-input>
-          <br>
-          <paper-checkbox id="visible">public</paper-checkbox>
-          <br>
-          <paper-input id="bankURL" label="E-Banking URL"></paper-input>
-          <paper-input id="BIC" label="BIC"></paper-input>
-          <paper-input id="IBAN" label="IBAN"></paper-input>
-          <br>
-          <paper-button icon="add" raised onclick="_submitkonto(event)">Submit</paper-button>
-          <paper-button raised onclick="_resetkonto(event)">Reset</paper-button>
-          <div class="output"></div>
-        </form>
+        <div class="collapse-content">
+          <form is="iron-form" method="get" action="/" id="addkontoform">
+            <paper-input id="kontoNr" label="Konto NR" required></paper-input>
+            <paper-input id="kontoName" label="Konto Name" required></paper-input>
+            <br>
+            <paper-checkbox id="visible">public</paper-checkbox>
+            <br>
+            <paper-input id="bankURL" label="E-Banking URL"></paper-input>
+            <paper-input id="BIC" label="BIC"></paper-input>
+            <paper-input id="IBAN" label="IBAN"></paper-input>
+            <br>
+            <paper-button icon="add" raised onclick="_submitkonto(event)">Submit</paper-button>
+            <paper-button raised onclick="_resetkonto(event)">Reset</paper-button>
+            <div class="output"></div>
+          </form>
+        </div>
         <!-- <div class="collapse-content">
         <paper-input id="kontoNr" label="Konto NR"></paper-input>
         <paper-input id="kontoDesc" label="Beschreibung"></paper-input>

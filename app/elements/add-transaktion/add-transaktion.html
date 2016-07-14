@@ -50,26 +50,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span class="expander"><iron-icon id="expander" icon="expand-more"></iron-icon>
       </h1>
       <iron-collapse id="addTransaktionContainer">
-        
+        <div class="collapse-content">
         <!-- Need to add more fields for this kind of add form  -->
-        <form is="iron-form" method="get" action="/" id="addtransaktionform">
-          <paper-input id="transaktionsText" label="Beschreibung" required></paper-input>
-          <paper-input id="transaktionsBetrag" label="Betrag" required></paper-input>
+          <form is="iron-form" method="get" action="/" id="addtransaktionform">
+            <paper-input id="transaktionsText" label="Beschreibung" required></paper-input>
+            <paper-input id="transaktionsBetrag" label="Betrag" required></paper-input>
 
-          <!-- add category dropdown - need to be fixed -->
-          <!-- <iron-ajax
-            id="categoryRequest"
-            auto
-            url="http://localhost:8081/ExpenseWebservice/categorylist"
-            handle-as="json"
-            method="GET"
-            on-response="handleResponse">
-          </iron-ajax> -->
+            <!-- add category dropdown - need to be fixed -->
+            <!-- <iron-ajax
+              id="categoryRequest"
+              auto
+              url="http://localhost:8081/ExpenseWebservice/categorylist"
+              handle-as="json"
+              method="GET"
+              on-response="handleResponse">
+            </iron-ajax> -->
 
-          <br>
-          <paper-button raised onclick="_submittransaktion(event)">Submit</paper-button>
-          <paper-button raised onclick="_resettransaktion(event)">Reset</paper-button>
-        </form>
+            <br>
+            <paper-button raised onclick="_submittransaktion(event)">Submit</paper-button>
+            <paper-button raised onclick="_resettransaktion(event)">Reset</paper-button>
+          </form>
+        </div>
         <!-- <div class="collapse-content">
           <quick-transaktion></quick-transaktion>
         </div> -->

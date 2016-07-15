@@ -43,9 +43,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-ajax
       id="transaktionRequest"
       auto
-      url="http://localhost:8081/ExpenseWebservice/transaktionlist/last10/user/test/pass/test"
+      url="{{url}}/transaktionlist/last10/user/{{user}}/pass/{{pass}}"
       handle-as="json"
       method="GET"
+      headers="{{headers}}"
       on-response="handleResponse"
       last-response={{data}}>
     </iron-ajax>
@@ -74,7 +75,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'transaktion-list',
 
       properties: {
-        foo: {
+        url: {
+          type: String
+        },
+        headers: {
+          type: String
+        },
+        user: {
+          type: String
+        },
+        pass: {
+          type: String
         }
       },
       handleResponse: function() {

@@ -85,6 +85,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'add-transaktion',
 
       properties: {
+        url: {
+          type: String
+        },
+        headers: {
+          type: String
+        }
       },
       toggle: function() {
         this.$.addTransaktionContainer.toggle();
@@ -109,6 +115,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     var form = Polymer.dom(event).localTarget.parentElement
 
     console.log("start add transaktion");
+    console.log("URL: this.$.url");
 
     // check if transaktionsBetrag is a number:
     var betrag = form.querySelector('#transaktionsBetrag').value;
@@ -125,17 +132,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     transaktionJson["transaktionsText"] = form.querySelector('#transaktionsText').value;
     transaktionJson["transaktionsBetrag"] = "-" + betrag;
     transaktionJson["transaktionsDate"] = new Date().getTime();
-    transaktionJson["kontoId"] = "5";
-    transaktionJson["typeId"] = "1";
+    transaktionJson["kontoId"] = "18";
+    transaktionJson["typeId"] = "42";
 
     console.log("current json: " + JSON.stringify(transaktionJson));
 
     var http = new XMLHttpRequest();
-    var url = "http://localhost:8081/ExpenseWebservice/transaktionhandler/addtransaktion";
+    var url = app.service.host + app.service.servicename + "/transaktionhandler/addtransaktion";
 
     http.open('POST', url, true);
+    http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    http.setRequestHeader('Authorization', 'Basic '+ btoa(app.user.name + ":" + app.user.pass));
     http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Accept', 'application/json');
+
     //http.setRequestHeader('Origin', 'http://localhost');
     // http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 

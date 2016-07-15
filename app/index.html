@@ -123,6 +123,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <span class="space"></span>
 
+          <!-- show username in header -->
+          <span>
+            <iron-icon icon="account-circle"></iron-icon>
+            {{user.user}}!
+          </span>
+
           <!-- Toolbar icons -->
           <paper-icon-button icon="refresh"></paper-icon-button>
           <paper-icon-button icon="search"></paper-icon-button>
@@ -157,7 +163,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <paper-material elevation="1">
                 <h1 class="page-title" tabindex="-1">Transaktions Übersicht</h1>
-                <transaktion-list></transaktion-list>
+                <transaktion-list
+                  url="{{service.host}}{{service.servicename}}"
+                  headers="{{user.header}}"
+                  user="{{user.user}}"
+                  pass="{{user.pass}}">
+                </transaktion-list>
               </paper-material>
             </section>
 
@@ -167,7 +178,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <paper-material elevation="1">
                 <h1 class="page-title" tabindex="-1">Kategorie Übersicht</h1>
-                <category-list></category-list>
+                <category-list
+                  url="{{service.host}}{{service.servicename}}"
+                  headers="{{user.header}}">
+                </category-list>
               </paper-material>
             </section>
 
@@ -177,7 +191,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <paper-material elevation="1">
                 <h1 class="page-title" tabindex="-1">Konto Übersicht</h1>
-                <konto-list></konto-list>
+                <konto-list
+                  url="{{service.host}}{{service.servicename}}"
+                  headers="{{user.header}}"
+                  user="{{user.user}}"
+                  pass="{{user.pass}}">
+                </konto-list>
               </paper-material>
             </section>
 

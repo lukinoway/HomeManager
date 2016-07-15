@@ -15,6 +15,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // Learn more about auto-binding templates at http://goo.gl/Dx1u2g
   var app = document.querySelector('#app');
 
+  // define some basic url parameters
+  app.service = {
+    host: "http://192.168.1.248:8080/",
+    servicename: "expenseservice"
+  };
+
+  app.user = {
+    user: "lukas",
+    pass: "pichler.1"
+  };
+
+  app.user["header"] = function() {
+    var header = '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "Basic ' + btoa(app.user.name + ":" + app.user.pass) + '"}';
+    console.log(header);
+    return header;
+  }
+
   // Sets app default base URL
   app.baseUrl = '/';
   if (window.location.port === '') {  // if production

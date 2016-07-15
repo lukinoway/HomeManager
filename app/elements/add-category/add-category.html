@@ -105,9 +105,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       console.log("current json: " + JSON.stringify(categoryJson));
 
       var http = new XMLHttpRequest();
-      var url = "http://localhost:8081/ExpenseWebservice/categoryhandler/addcategory";
+      var url = app.service.host + app.service.servicename + "/categoryhandler/addcategory";
 
       http.open('POST', url, true);
+      http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      http.setRequestHeader('Authorization', 'Basic '+ btoa(app.user.name + ":" + app.user.pass));
       http.setRequestHeader('Content-type', 'application/json');
       http.setRequestHeader('Accept', 'application/json');
       //http.setRequestHeader('Origin', 'http://localhost');

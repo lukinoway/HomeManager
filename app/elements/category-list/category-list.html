@@ -35,9 +35,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-ajax
       id="categoryRequest"
       auto
-      url="http://localhost:8081/ExpenseWebservice/categorylist"
+      url="{{url}}/categorylist"
       handle-as="json"
       method="GET"
+      headers="{{headers}}"
       on-response="handleResponse"
       last-response="{{data}}">
     </iron-ajax>
@@ -60,27 +61,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'category-list',
 
       properties: {
-        username: {
-          type: String,
-          value: 'lukas'
-        },
-        password: {
-          type: String,
-          value: 'pichler.1'
+        url: {
+          type: String
         },
         headers: {
-          type: String,
-          computed: 'createHeader(username, password)'
+          type: String
         }
+        // username: {
+        //   type: String,
+        //   value: 'lukas'
+        // },
+        // password: {
+        //   type: String,
+        //   value: 'pichler.1'
+        // },
+        // headers: {
+        //   type: String,
+        //   computed: 'createHeader(username, password)'
+        // }
       //   username: "lukas",
       //   password: "pichler.1",
       //   headers: '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "Basic ' + btoa(this.username + ":" + this.password) + '"}'
-      },
-
-      createHeader: function(username, password) {
-        var header = '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "Basic ' + btoa(username + ":" + password) + '"}';
-        console.log(header);
-        return
       },
       handleResponse: function() {
         var data = this.$.categoryRequest.lastResponse;

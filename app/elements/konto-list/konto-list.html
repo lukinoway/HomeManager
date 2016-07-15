@@ -41,9 +41,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-ajax
       id="kontoRequest"
       auto
-      url="http://localhost:8081/ExpenseWebservice/konto/user/test/pass/test"
+      url="{{url}}/konto/user/{{user}}/pass/{{pass}}"
       handle-as="json"
       method="GET"
+      headers="{{headers}}"
       on-response="handleResponse"
       last-response={{data}}>
     </iron-ajax>
@@ -72,10 +73,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'konto-list',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'konto-list',
-          notify: true
+        url: {
+          type: String
+        },
+        headers: {
+          type: String
+        },
+        user: {
+          type: String
+        },
+        pass: {
+          type: String
         }
       },
       handleResponse: function() {
@@ -89,7 +97,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     var head = Polymer.dom(event).localTarget.parentElement;
     console.log("clicked header" +  JSON.stringify(event.detail));
     head.querySelector('.collapse').toggle();
-
   };
 
   </script>

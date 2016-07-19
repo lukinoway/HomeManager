@@ -101,6 +101,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Konto</span>
           </a>
 
+          <!-- temp LOGIN Entry -->
+          <a data-route="login" href="{{baseUrl}}login">
+            <iron-icon icon="account-circle"></iron-icon>
+            <span>Login</span>
+          </a>
+
 <!-- dont need this stuff
           <a data-route="users" href="{{baseUrl}}users">
             <iron-icon icon="info"></iron-icon>
@@ -125,8 +131,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- show username in header -->
           <span>
-            <iron-icon icon="account-circle"></iron-icon>
-            {{user.user}}
+            <iron-icon id="userIcon" icon="cloud-off"></iron-icon>
+            <span id="userInfo">{{user.user}}</span>
           </span>
 
           <!-- Toolbar icons -->
@@ -198,6 +204,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   user="{{user.user}}"
                   pass="{{user.pass}}">
                 </konto-list>
+              </paper-material>
+            </section>
+
+            <!-- LOGIN-VIEW -->
+            <section data-route="login">
+              <paper-material elevation="1">
+                <h1 class="page-title" tabindex="-1">LOGIN</h1>
+                <login-form></login-form>
               </paper-material>
             </section>
 

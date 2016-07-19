@@ -136,7 +136,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       http.open('POST', url, true);
       http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-      http.setRequestHeader('Authorization', 'Basic '+ btoa(app.user.name + ":" + app.user.pass));
+      http.setRequestHeader('Authorization', app.user.hash);
       http.setRequestHeader('Content-type', 'application/json');
       http.setRequestHeader('Accept', 'application/json');
       //http.setRequestHeader('Origin', 'http://localhost');

@@ -17,20 +17,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   // define some basic url parameters
   app.service = {
-    host: "http://192.168.1.248:8080/",
-    servicename: "expenseservice"
+    host: "http://localhost:8081/",
+    servicename: "ExpenseWebservice"
   };
 
   app.user = {
-    user: "lukas",
-    pass: "pichler.1"
+    user: "test",
+    pass: "test"
   };
 
-  app.user["header"] = function() {
-    var header = '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "Basic ' + btoa(app.user.name + ":" + app.user.pass) + '"}';
-    console.log(header);
-    return header;
-  }
+  // generate header for HTTP AUTH
+  app.user["header"] = '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "Basic ' + btoa(app.user.user + ":" + app.user.pass) + '"}';
+  app.user["hash"] = "Basic " + btoa(app.user.user + ":" + app.user.pass);
 
   // Sets app default base URL
   app.baseUrl = '/';

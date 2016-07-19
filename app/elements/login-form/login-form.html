@@ -1,0 +1,96 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-material/paper-material.html">
+<link rel="import" href="..\..\bower_components/iron-form/iron-form.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="..\..\bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="..\..\bower_components/paper-toast/paper-toast.html">
+
+<dom-module id="login-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <form is="iron-form" method="get" action="/" id="loginform">
+      <paper-input id="loginUser" label="Username" required></paper-input>
+      <paper-input id="loginPass" label="Passwort" required></paper-input>
+
+      <br>
+      <paper-button raised onclick="_submitLogin(event)">Submit</paper-button>
+      <paper-button raised onclick="_resetLogin(event)">Reset</paper-button>
+    </form>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'login-form',
+
+      properties: {
+      }
+    });
+  })();
+
+  function _submitLogin(event) {
+    var form = Polymer.dom(event).localTarget.parentElement
+
+    console.log("start login");
+    var loginUser = form.querySelector('#loginUser').value;
+    var loginPass = form.querySelector('#loginPass').value;
+
+    var hash = "Basic " + btoa(loginUser + ":" + loginPass);
+
+    var http = new XMLHttpRequest();
+    var url = app.service.host + app.service.servicename + "/login";
+
+    http.open('GET', url, true);
+    http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    http.setRequestHeader('Authorization', hash);
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('Accept', 'application/json');
+
+    http.onload = function () {
+      console.log("status:" + this.status);
+      console.log("reply: " + this.responseText);
+
+      var message = "error while login; STATUS:" + this.status;
+      if(this.status == 200) {
+        message = this.responseText;
+
+        //set user
+        app.user.user = loginUser;
+        app.user.pass = loginPass;
+        app.user.hash = hash;
+
+        Polymer.dom(document).querySelector('#userInfo').innerHTML = "Hello " + loginUser + "!";
+        Polymer.dom(document).querySelector('#userIcon').icon="cloud-done";
+
+        form.reset();
+      }
+      app.$.toast.text = message;
+      app.$.toast.show();
+    };
+    http.send();
+  }
+
+  function _resetLogin(event) {
+    var form = Polymer.dom(event).localTarget.parentElement
+    form.reset();
+  }
+  </script>
+</dom-module>

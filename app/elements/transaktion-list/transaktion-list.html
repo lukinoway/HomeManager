@@ -42,13 +42,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <iron-ajax
       id="transaktionRequest"
-      auto
       url="{{url}}/transaktionlist/last10/user/{{user}}/pass/{{pass}}"
       handle-as="json"
       method="GET"
       headers="{{headers}}"
       on-response="handleResponse"
-      last-response={{data}}>
+      last-response={{data}}
+      auto>
     </iron-ajax>
     <iron-list items="[[data.transaktion]]" as="item">
       <template>
@@ -92,6 +92,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var data = this.$.transaktionRequest.lastResponse;
         console.log("received data:" + JSON.stringify(data));
       },
+
+      _loadData: function() {
+        console.log("header:" + this.$.headers);
+        this.$.transaktionRequest.generateRequest();
+      }
+
     });
   })();
 

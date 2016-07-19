@@ -1,0 +1,118 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/iron-form/iron-form.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="..\..\bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="..\..\bower_components/paper-toast/paper-toast.html">
+
+<dom-module id="add-transaktion-quick">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <form is="iron-form" method="get" action="/" id="addtransaktionform">
+      <paper-input id="transaktionsText" label="Beschreibung" required></paper-input>
+      <paper-input id="transaktionsBetrag" label="Betrag" required></paper-input>
+
+      <!-- add category dropdown - need to be fixed -->
+      <!-- <iron-ajax
+        id="categoryRequest"
+        auto
+        url="http://localhost:8081/ExpenseWebservice/categorylist"
+        handle-as="json"
+        method="GET"
+        on-response="handleResponse">
+      </iron-ajax> -->
+
+      <br>
+      <paper-button raised onclick="_submitTransaktionQuick(event)">Submit</paper-button>
+      <paper-button raised onclick="_resetTransaktionQuick(event)">Reset</paper-button>
+    </form>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'add-transaktion-quick',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'add-transaktion-quick',
+          notify: true
+        }
+      }
+    });
+  })();
+  function _submitTransaktionQuick(event) {
+    var form = Polymer.dom(event).localTarget.parentElement
+
+    console.log("start add transaktion");
+    console.log("URL: this.$.url");
+
+    // check if transaktionsBetrag is a number:
+    var betrag = form.querySelector('#transaktionsBetrag').value;
+    var regex=/^[0-9]+$/;
+    if (!betrag.match(regex)) {
+      alert("your current input is not a valid number; INPUT: " + betrag);
+      form.querySelector('#transaktionsBetrag').value ='';
+      form.querySelector('#transaktionsBetrag').focus();
+      return false;
+    };
+
+    // build json
+    var transaktionJson = {};
+    transaktionJson["transaktionsText"] = form.querySelector('#transaktionsText').value;
+    transaktionJson["transaktionsBetrag"] = "-" + betrag;
+    transaktionJson["transaktionsDate"] = new Date().getTime();
+    transaktionJson["kontoId"] = "18";
+    transaktionJson["typeId"] = "42";
+
+    console.log("current json: " + JSON.stringify(transaktionJson));
+
+    var http = new XMLHttpRequest();
+    var url = app.service.host + app.service.servicename + "/transaktionhandler/addtransaktion";
+
+    http.open('POST', url, true);
+    http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    http.setRequestHeader('Authorization', app.user.hash);
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('Accept', 'application/json');
+
+    http.onload = function () {
+      console.log("status:" + this.status);
+      console.log("reply: " + this.responseText);
+      // alert(this.responseText);
+
+      var message = "error while creating new transaktion; STATUS:" + this.status;
+      if(this.status == 200) {
+        message = this.responseText;
+        form.reset();
+      }
+      app.$.toast.text = message;
+      app.$.toast.show();
+    };
+    http.send(JSON.stringify(transaktionJson));
+  }
+
+  function _resetTransaktionQuick(event) {
+    var form = Polymer.dom(event).localTarget.parentElement
+    form.reset();
+  }
+  </script>
+</dom-module>

@@ -16,6 +16,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // client-side router inspired by the Express router
     // More info: https://visionmedia.github.io/page.js/
 
+    if(app.user.user === '') {
+      app.$.toast.text = "unknown session, please login";
+      app.$.toast.show();
+      page.redirect('/login');
+    }
+
     // Removes end / from app.baseUrl which page.base requires for production
     if (window.location.port === '') {  // if production
       page.base(app.baseUrl.replace(/\/$/, ''));

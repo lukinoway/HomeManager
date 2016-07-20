@@ -30,6 +30,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.user["header"] = '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "Basic ' + btoa(app.user.user + ":" + app.user.pass) + '"}';
   app.user["hash"] = "Basic " + btoa(app.user.user + ":" + app.user.pass);
 
+  // store data locally for faster acces
+  app.data = {
+    categoryData: {
+      type: [],
+      notify: true
+    },
+    kontoData: [],
+    transaktionData: [],
+    getCategory: function loadCategories() {
+      console.log("start get category");
+
+      var http = new XMLHttpRequest();
+      var url = app.service.host + app.service.servicename + "/categorylist";
+
+      http.open('GET', url, true);
+      http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      http.setRequestHeader('Authorization', app.user.hash);
+      http.setRequestHeader('Content-type', 'application/json');
+      http.setRequestHeader('Accept', 'application/json');
+      //http.setRequestHeader('Origin', 'http://localhost');
+      // http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+      http.onload = function () {
+        console.log("status:" + this.status);
+        console.log("reply: " + this.responseText);
+
+        var message = "error while loading category list; STATUS:" + this.status;
+        if(this.status == 200) {
+          message = "loaded category data";
+          app.data.categoryData = JSON.parse(this.responseText).category;
+          console.log(app.data.categoryData);
+        }
+        app.$.toast.text = message;
+        app.$.toast.show();
+      };
+      http.send();
+    }
+  }
+
   // Sets app default base URL
   app.baseUrl = '/';
   if (window.location.port === '') {  // if production

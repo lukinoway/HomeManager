@@ -82,6 +82,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         form.reset();
         page.redirect('/');
+
+
+        // initial data load:
+        app.data.getCategory();
+        // Polymer.dom(document).querySelector('#categoryList').items = app.data.categoryData;
+        // Polymer.dom(event).querySelector('#transaktionRequest').request;
       }
       app.$.toast.text = message;
       app.$.toast.show();

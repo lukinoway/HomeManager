@@ -110,7 +110,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       console.log("create welcome message");
       Polymer.dom(document).querySelector('#userInfo').innerHTML = "Hello " + app.user.user + "!";
       Polymer.dom(document).querySelector('#userIcon').icon="cloud-done";
-      Polymer.dom(document).querySelector('#userLogout').disabled="false";
+      Polymer.dom(document).querySelector('#userLogout').disabled=false;
       page.redirect('/');
     }
   });
@@ -167,6 +167,10 @@ function logout(event) {
 
   Polymer.dom(document).querySelector('#userInfo').innerHTML = "not signed in";
   Polymer.dom(document).querySelector('#userIcon').icon="cloud-off";
+  Polymer.dom(document).querySelector('#userLogout').disabled=true;
+
+  // redirect to login page
+  page.redirect('/login');
 };
 
 function showLogin() {

@@ -27,7 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <form is="iron-form" method="get" action="/" id="loginform">
       <paper-input id="loginUser" label="Username" required></paper-input>
-      <paper-input id="loginPass" label="Passwort" required></paper-input>
+      <paper-input id="loginPass" label="Passwort" type="password" required></paper-input>
 
       <br>
       <paper-button raised onclick="_submitLogin(event)">Submit</paper-button>
@@ -84,7 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         form.reset();
         Polymer.dom(document).querySelector('#userInfo').innerHTML = "Hello " + app.user.user + "!";
         Polymer.dom(document).querySelector('#userIcon').icon="cloud-done";
-        Polymer.dom(document).querySelector('#userLogout').disabled="false";
+        Polymer.dom(document).querySelector('#userLogout').disabled=false;
         page.redirect('/');
 
 

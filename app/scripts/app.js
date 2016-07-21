@@ -23,12 +23,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   app.user = {
     user: '',
-    pass: ''
+    pass: '',
+    hash: ''
   };
 
+
+
+  if (localStorage.user) {
+    console.log(localStorage.user);
+    app.user.user = localStorage.user;
+    showLogin();
+  }
+  if (localStorage.hash) {
+    app.user.hash = String(localStorage.hash);
+  }
+
   // generate header for HTTP AUTH
-  app.user["header"] = '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "Basic ' + btoa(app.user.user + ":" + app.user.pass) + '"}';
-  app.user["hash"] = "Basic " + btoa(app.user.user + ":" + app.user.pass);
+  app.user["header"] = '{"X-Requested-With": "XMLHttpRequest"' + ', "Authorization": "' + app.user.hash + '"}';
 
   // store data locally for faster acces
   app.data = {
@@ -93,6 +104,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {
     // imports are loaded and elements have been registered
+
+    // show login message
+    if(app.user.user != '') {
+      console.log("create welcome message");
+      Polymer.dom(document).querySelector('#userInfo').innerHTML = "Hello " + app.user.user + "!";
+      Polymer.dom(document).querySelector('#userIcon').icon="cloud-done";
+      Polymer.dom(document).querySelector('#userLogout').disabled="false";
+      page.redirect('/');
+    }
   });
 
   // Main area's paper-scroll-header-panel custom condensing transformation of
@@ -133,3 +153,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
 })(document);
+
+function logout(event) {
+  console.log("perform logout");
+  if (localStorage.user) {
+    app.user.user = '';
+    localStorage.user = '';
+  }
+  if (localStorage.hash) {
+    app.user.hash = '';
+    localStorage.hash = '';
+  }
+
+  Polymer.dom(document).querySelector('#userInfo').innerHTML = "not signed in";
+  Polymer.dom(document).querySelector('#userIcon').icon="cloud-off";
+};
+
+function showLogin() {
+};

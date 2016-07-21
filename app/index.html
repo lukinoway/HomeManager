@@ -132,12 +132,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- show username in header -->
           <span>
             <iron-icon id="userIcon" icon="cloud-off"></iron-icon>
-            <span id="userInfo">{{user.user}}</span>
+            <span id="userInfo">not signed in</span>
+            <!-- logout -->
+            <paper-icon-button id="userLogout" icon="cancel" disabled="true" onclick="logout(event)"></paper-icon-button>
           </span>
 
           <!-- Toolbar icons -->
-          <paper-icon-button icon="refresh"></paper-icon-button>
-          <paper-icon-button icon="search"></paper-icon-button>
+          <!-- <paper-icon-button icon="refresh"></paper-icon-button>
+          <paper-icon-button icon="search"></paper-icon-button> -->
 
           <!-- Application name -->
           <div class="middle middle-container">

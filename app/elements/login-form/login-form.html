@@ -77,10 +77,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         app.user.pass = loginPass;
         app.user.hash = hash;
 
-        Polymer.dom(document).querySelector('#userInfo').innerHTML = "Hello " + loginUser + "!";
-        Polymer.dom(document).querySelector('#userIcon').icon="cloud-done";
+        localStorage.user = loginUser;
+        console.log(localStorage.user);
+        localStorage.hash = hash;
 
         form.reset();
+        Polymer.dom(document).querySelector('#userInfo').innerHTML = "Hello " + app.user.user + "!";
+        Polymer.dom(document).querySelector('#userIcon').icon="cloud-done";
+        Polymer.dom(document).querySelector('#userLogout').disabled="false";
         page.redirect('/');
 
 

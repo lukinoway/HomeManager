@@ -47,7 +47,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       type: [],
       notify: true
     },
-    kontoData: [],
+    kontoData: {
+      type: [],
+      notify: true
+    },
     transaktionData: [],
     getCategory: function loadCategories() {
       console.log("start get category");
@@ -65,13 +68,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       http.onload = function () {
         console.log("status:" + this.status);
-        console.log("reply: " + this.responseText);
+        // console.log("reply: " + this.responseText);
 
         var message = "error while loading category list; STATUS:" + this.status;
         if(this.status == 200) {
           message = "loaded category data";
           app.data.categoryData = JSON.parse(this.responseText).category;
-          console.log(app.data.categoryData);
+          // console.log(app.data.categoryData);
+        }
+        app.$.toast.text = message;
+        app.$.toast.show();
+      };
+      http.send();
+    },
+    getKonto: function loadKontos() {
+      console.log("start get konto");
+
+      var http = new XMLHttpRequest();
+      var url = app.service.host + app.service.servicename + "/kontolist/user/" + app.user.user;
+
+      http.open('GET', url, true);
+      http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      http.setRequestHeader('Authorization', app.user.hash);
+      http.setRequestHeader('Content-type', 'application/json');
+      http.setRequestHeader('Accept', 'application/json');
+
+      http.onload = function () {
+        console.log("status:" + this.status);
+        // console.log("reply: " + this.responseText);
+
+        var message = "error while loading konto list; STATUS:" + this.status;
+        if(this.status == 200) {
+          message = "loaded konto data";
+          app.data.kontoData = JSON.parse(this.responseText).konto;
+          // console.log(app.data.kontoData);
         }
         app.$.toast.text = message;
         app.$.toast.show();
@@ -112,6 +142,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer.dom(document).querySelector('#userIcon').icon="cloud-done";
       Polymer.dom(document).querySelector('#userLogout').disabled=false;
       page.redirect('/');
+
+      // load category data
+      app.data.getCategory();
+
+      // load konto data
+      app.data.getKonto();
     }
   });
 

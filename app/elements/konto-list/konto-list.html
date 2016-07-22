@@ -9,6 +9,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-material/paper-material.html">
+<link rel="import" href="..\..\bower_components/paper-icon-button/paper-icon-button.html">
 
 <dom-module id="konto-list">
   <template>
@@ -17,52 +19,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
 
-
-      .konto {
+      .kontoContent {
         background-color: white;
-        border-style: solid;
-        border-color: #dedede;
-        border-width: 1px;
+        margin-top: 20px;
       }
-      .konto .kontoheader {
+      .kontoContent .kontoheader {
         padding: 15px;
         padding-bottom: 30px;
         background-color: #78909c;
         color: white;
+        margin-top: 1px;
       }
-      .konto .text {
-        padding-top: 15px;
-        padding-left: 40px;
-        padding-right: 40px;
+
+      .kontoContent .collapse {
+        background-color: white;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .kontoContent .text {
         font-size: 21px;
         font-weight: 300;
+        background-color: white;
+        height: auto;
       }
     </style>
-    <iron-ajax
-      id="kontoRequest"
-      url="{{url}}/konto/user/{{user}}/pass/{{pass}}"
-      handle-as="json"
-      method="GET"
-      headers="{{headers}}"
-      on-response="handleResponse"
-      last-response={{data}}>
-    </iron-ajax>
-    <iron-list items="[[data.konto]]" as="item">
-      <template>
-          <div class="konto">
-            <div class="kontoheader" onclick="_toggle(event)">
-              <span style="float: left" >[[item.kontoName]]</span>
-              <span style="float: right">[[item.kontoNr]]</span>
-            </div>
-            <iron-collapse class="collapse" no-animation>
-            <div class="text">
-              <span style="float: left">visible: [[item.visible]]</span>
-              <span style="float: right">ID: [[item.kontoId]]</span>
-            </div>
-            </iron-collapse>
-          </div>
-      </template>
-    </iron-list>
+    <paper-material class="kontoContent" elevation="1">
+      <paper-icon-button icon="autorenew" on-click="loadData"></paper-icon-button>
+      <span>show Data</span>
+      <div id="kontoListContent">
+      </div>
+    </paper-material>
   </template>
   <script>
   (function() {
@@ -72,23 +59,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'konto-list',
 
       properties: {
-        url: {
-          type: String
-        },
-        headers: {
-          type: String
-        },
-        user: {
-          type: String
-        },
-        pass: {
-          type: String
+      },
+      loadData: function(event) {
+        var content = Polymer.dom(event).localTarget.parentElement;
+        var list = content.querySelector('#kontoListContent');
+
+        // just to be sure that we don't load data twice
+        list.innerHTML = ''
+
+        for(var i = 0; i < app.data.kontoData.length; i++) {
+          list.innerHTML =
+            list.innerHTML
+            +'<div class="kontoheader style-scope konto-list" onclick="_toggle(event)">'
+            +'<span style="float: left">'+ app.data.kontoData[i].kontoName + '</span>'
+            +'<span style="float: right">' + app.data.kontoData[i].kontoNr + '</span>'
+            +'<iron-collapse class="collapse style-scope konto-list" no-animation>'
+            +'<div class="text style-scope konto-list">'
+            +'<span style="float: left">visible: '+ app.data.kontoData[i].visible +'</span>'
+            +'<span style="float: right">ID: ' + app.data.kontoData[i].kontoId +'</span>'
+            +'</div>'
+            +'</iron-collapse>'
+            +'</div>';
         }
-      },
-      handleResponse: function() {
-        var data = this.$.kontoRequest.lastResponse;
-        console.log("received data:" + JSON.stringify(data));
-      },
+      }
     });
   })();
   // handle click on transaktion header to open details

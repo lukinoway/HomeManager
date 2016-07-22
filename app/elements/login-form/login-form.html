@@ -87,11 +87,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         Polymer.dom(document).querySelector('#userLogout').disabled=false;
         page.redirect('/');
 
-
         // initial data load:
         app.data.getCategory();
-        // Polymer.dom(document).querySelector('#categoryList').items = app.data.categoryData;
-        // Polymer.dom(event).querySelector('#transaktionRequest').request;
+        app.data.getKonto();
       }
       app.$.toast.text = message;
       app.$.toast.show();

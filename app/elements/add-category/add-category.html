@@ -95,11 +95,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     function _submitcategory(event) {
       var form = Polymer.dom(event).localTarget.parentElement
 
+      var text = form.querySelector('#typeText').value.trim();
+      if(text === '') {
+        alert("please enter valid category name");
+        form.querySelector('#typeText').focus();
+        form.querySelector('#typeText').value = '';
+        return false;
+      }
+
       console.log("start add category");
       // build json
       var categoryJson = {};
       categoryJson["parent"] = "0";
-      categoryJson["typeText"] = form.querySelector('#typeText').value;
+      categoryJson["typeText"] = text;
       categoryJson["typeId"] = "0";
 
       console.log("current json: " + JSON.stringify(categoryJson));
@@ -112,8 +120,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       http.setRequestHeader('Authorization', app.user.hash);
       http.setRequestHeader('Content-type', 'application/json');
       http.setRequestHeader('Accept', 'application/json');
-      //http.setRequestHeader('Origin', 'http://localhost');
-      // http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
       http.onload = function () {
         console.log("status:" + this.status);

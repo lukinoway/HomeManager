@@ -16,6 +16,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="..\..\bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="..\..\bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="..\..\bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
 <dom-module id="add-transaktion-quick">
   <template>
@@ -23,24 +25,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+
+      #categorySelect {
+        margin-top: 10px;
+        margin-bottom: 15px;
+        height: 30px;
+        width: 100%;
+      }
+
+      .submit {
+        color: white;
+        background-color: var(--paper-light-green-700);
+      }
     </style>
     <form is="iron-form" method="get" action="/" id="addtransaktionform">
       <paper-input id="transaktionsText" label="Beschreibung" required></paper-input>
       <paper-input id="transaktionsBetrag" label="Betrag" required></paper-input>
 
       <!-- add category dropdown - need to be fixed -->
-      <!-- <iron-ajax
-        id="categoryRequest"
-        auto
-        url="http://localhost:8081/ExpenseWebservice/categorylist"
-        handle-as="json"
-        method="GET"
-        on-response="handleResponse">
-      </iron-ajax> -->
+      <select id="categorySelect" on-focus="_fillCategoryList">
+        <option value="-1">Kategorie...</option>
+      </select>
 
       <br>
-      <paper-button raised onclick="_submitTransaktionQuick(event)">Submit</paper-button>
-      <paper-button raised onclick="_resetTransaktionQuick(event)">Reset</paper-button>
+      <center>
+        <paper-button class="submit" raised onclick="_submitTransaktionQuick(event)">Submit</paper-button>
+        <paper-button raised onclick="_resetTransaktionQuick(event)">Reset</paper-button>
+      </center>
     </form>
   </template>
   <script>
@@ -51,23 +62,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'add-transaktion-quick',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'add-transaktion-quick',
-          notify: true
+        loadedList: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      _fillCategoryList: function(event) {
+        // console.log("Hi There" + this.loadedList);
+        if(!this.loadedList) {
+          var categoryBox = Polymer.dom(event).localTarget;
+
+          // clear list to avoid duplicate entries
+          categoryBox.innerHTML = ''
+
+          var entries;
+          for(var i = 0; i < app.data.categoryData.length; i++) {
+            entries = entries +'<option value="'+ app.data.categoryData[i].typeId +'">'
+              + app.data.categoryData[i].typeText + '</option>';
+          }
+          categoryBox.innerHTML = entries;
+        }
+        else {
+          console.log("already loaded list");
         }
       }
+
     });
   })();
   function _submitTransaktionQuick(event) {
-    var form = Polymer.dom(event).localTarget.parentElement
+    var form = Polymer.dom(event).localTarget.parentElement.parentElement;
 
     console.log("start add transaktion");
-    console.log("URL: this.$.url");
 
-    // check if transaktionsBetrag is a number:
+    // check if there is a valid INPUT
+    var text = form.querySelector('#transaktionsText').value.trim();
+    if(text === '') {
+      alert("no valid entry, Please check input");
+      form.querySelector('#transaktionsText').focus();
+      form.querySelector('#transaktionsText').value = '';
+      return false;
+    }
+
+    // check if transaktionsBetrag is a decimal number:
     var betrag = form.querySelector('#transaktionsBetrag').value;
-    var regex=/^[0-9]+$/;
+    betrag = betrag.replace(",", ".");
+    var regex = /^\d+(\.\d{1,2})?$/;
     if (!betrag.match(regex)) {
       alert("your current input is not a valid number; INPUT: " + betrag);
       form.querySelector('#transaktionsBetrag').value ='';
@@ -75,13 +115,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return false;
     };
 
+    var category = form.querySelector('#categorySelect').value
+    if(category == '-1') {
+      alert("no category selected");
+      return false;
+    }
+
     // build json
     var transaktionJson = {};
-    transaktionJson["transaktionsText"] = form.querySelector('#transaktionsText').value;
+    transaktionJson["transaktionsText"] = text;
     transaktionJson["transaktionsBetrag"] = "-" + betrag;
     transaktionJson["transaktionsDate"] = new Date().getTime();
     transaktionJson["kontoId"] = "18";
-    transaktionJson["typeId"] = "42";
+    transaktionJson["typeId"] = category;
 
     console.log("current json: " + JSON.stringify(transaktionJson));
 
